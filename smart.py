@@ -24,7 +24,7 @@ import csv
 sleepTime = 0 #counter for no card delay
 Pcard = "ready" #string to set state of reader
 pathofCSV = 'time.csv'
-
+tempMessage=0
 
 
 def destroy_window():
@@ -35,10 +35,6 @@ def write_to_logfile(uid, logTime):
     with open(pathofCSV, 'a', newline='') as csvfile:
         timewriter = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
         timewriter.writerow([uid,logTime ])
-
-            
-tempMessage=0
-
 
 
 while True:
