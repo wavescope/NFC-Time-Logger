@@ -6,7 +6,6 @@ Created on Mon Jun 17 23:32:14 2024
 """
 #Useful links
 #https://pyscard.sourceforge.io/pyscard-wrapper.html#
-#https://rpi4cluster.com/python-nfc-writer-reader/
 #https://realpython.com/python-gui-tkinter/ 
 
 from smartcard.Exceptions import NoCardException
