@@ -8,7 +8,6 @@ Created on Mon Jun 17 23:32:14 2024
 #https://pyscard.sourceforge.io/pyscard-wrapper.html#
 #https://rpi4cluster.com/python-nfc-writer-reader/
 #https://realpython.com/python-gui-tkinter/ 
-#https://www.reddit.com/r/Crostini/comments/lc5p7n/tkinter_not_opening_a_window_when_using_spyder_3/
 
 from smartcard.Exceptions import NoCardException
 from smartcard.System import readers
@@ -24,7 +23,7 @@ import csv
 
 
 sleepTime = 0 #counter for no card delay
-Pcard = "ready" #string to set state of 
+Pcard = "ready" #string to set state of reader
 pathofCSV = 'time.csv'
 
 
@@ -38,18 +37,6 @@ def write_to_logfile(uid, logTime):
         timewriter = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
         timewriter.writerow([uid,logTime ])
 
-def confirm_write(logTime):
-    
-    with open(pathofCSV, 'r', newline='') as csvfile:
-
-        csvD =[]
-        timereader = csv.reader(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        for row in timereader:
-            csvD.append(str(row))
-
-        poo = csvD[-1].split(",")
-        poo = poo[1].split("'")
-        print(poo[1])    
             
 tempMessage=0
 
@@ -78,17 +65,13 @@ while True:
                     print(f"Card UID : {uid} --> Time:" + str(logTime))
                     Pcard = "not ready"
                     sleepTime =0
-                    
                     logTime = datetime.now()
-                    write_to_logfile(uid, logTime)
-
-                    #TODO confirm write success
-                    
-                    #Alert user of successful UID write
+                 
+                    #Alert user of successful UID read
                     win = Tk()
                     win.geometry("550x250")
                     win.title("RFID Tag")
-                    tapMess = "UID : " + str(uid) +"\n" + "The patient time has been logged"
+                    tapMess = "UID : " + str(uid) +"\n" + "The patient RFID has been read"
                                     
                     image = im = Image.open("C:\pilot\correct-sml.png")
                     tk_image = ImageTk.PhotoImage(image)
@@ -100,8 +83,10 @@ while True:
 
                     win.after(3000, destroy_window)
                     win.mainloop()
+
+                    sleep(.1)
                     
-                    
+                    write_to_logfile(uid, logTime)
                    
                 
                 if sleepTime>1 and Pcard != "ready":
@@ -113,21 +98,15 @@ while True:
                 sleepTime =sleepTime+1
     
         except NoCardException:
-            if tempMessage > 20:
+            if tempMessage > 40:
                 logTime2 = datetime.now()
                 print(reader, ' no card inserted, Time : ' +str(logTime2))
                 tempMessage=0
 
-            sleep(0.2)
+            sleep(0.1)
             tempMessage=tempMessage+1
         
         except :
-            print(reader, ' Pleas Try again, Time:' +str(logTime2))
+            logTime2 = datetime.now()
+            print(reader, ' Please Try again, Time:' +str(logTime2))
             sleep(0.5)
-
-
-
-
-'''if 'win32' == sys.platform:
-    print('press Enter to continue')
-    sys.stdin.read(1)'''
