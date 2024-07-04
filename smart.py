@@ -77,8 +77,8 @@ while True:
                     tk_image = ImageTk.PhotoImage(image)
 
                     
-                    Label(win, text= tapMess, font=('Helvetica 18 bold') ).place(x=130,y=40)
-                    Label(win, image=tk_image, compound='center' ).place(x=200,y=100)
+                    Label(win, text= tapMess, font=('Helvetica 18 bold') ).place(x=110,y=180)
+                    Label(win, image=tk_image, compound='center' ).place(x=200,y=20)
 
 
                     win.after(3000, destroy_window)
